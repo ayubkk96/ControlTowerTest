@@ -1,0 +1,11 @@
+1. Receive event_handler in correct format
+- Event cannot be NULL or Integer
+- Normal events and updates: Plane ID, Plane Model, Origin, Destination, Event Type, Timestamp, Fuel Delta
+- Remove event: Plane ID, Timestamp
+2. Display Plane ID, Flight Status, Last known fuel level flight at any given point in time
+3. Alter fuel levels e.g. could receive -324, must take it as a subtraction
+4. Remove events that match the plane id and timestamp received
+5. Convert timestamp to epoch so that its easier to find the most recent event depending on time X
+6. Calculate shortest distance between timestamp given and each plane's most recent event timestamp X
+7. Change event names depending on the event given e.g. if given re-fuel,
+assume that in one hour the plane is 'Awaiting-Takeoff'
