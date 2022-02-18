@@ -19,12 +19,9 @@ class ReplInterface {
     var event = ArrayList<Event>()
     var eventCount = 8
     val time = Time()
-    var newFuel = 0
 
     fun run() {
-        println(
-            "You are entering the REPL, press q to quit at any time"
-        )
+        println("You are entering the REPL")
         val scanner = Scanner(System.`in`)
         println(instructions)
         while (scanner.hasNext()) {
@@ -43,31 +40,12 @@ class ReplInterface {
                 if (eventCount != 0) {
                     println("Please add your event(s)")
                 }
-
                 for (i in 1..eventCount) {
                     userInput = scanner.nextLine()
                     val fields = userInput.split(" ")
                     try {
                         val timestamp = time.convertToEpochTime(fields[5])
                         event = inputEvent.addData(fields, event, timestamp)
-//                        if (fields[6].toInt() <= 0) {
-//                            newFuel = outputEvent.alterFuel(event, fields, timestamp)
-//                            event.add(
-//                                Event(
-//                                    fields[0], fields[1].toInt(),
-//                                    fields[2], fields[3], fields[4],
-//                                    timestamp, newFuel
-//                                )
-//                            )
-//                        } else {
-//                            event.add(
-//                                Event(
-//                                    fields[0], fields[1].toInt(), fields[2],
-//                                    fields[3], fields[4], timestamp,
-//                                    fields[6].toInt()
-//                                )
-//                            )
-//                        }
                     } catch (e: IndexOutOfBoundsException) {
                         println("The input:$fields is not in the correct format")
                         break

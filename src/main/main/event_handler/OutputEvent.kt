@@ -1,63 +1,18 @@
 package event_handler
 
-import domain.DisplayedEvent
 import mu.KotlinLogging
 import domain.Event
 import domain.Plane
-import domain.RemovedEvent
 import util.Time
-import java.awt.image.AreaAveragingScaleFilter
-import kotlin.math.abs
+
+/**
+ * A OutputEvent class that has methods that
+ * help output the events*/
+
 
 class OutputEvent {
-    private val logger = KotlinLogging.logger {}
     val time = Time()
-    fun getEventsSize(timestamp: String?, index: Int): Int {
-        val event = ArrayList<Event>()
-        if (event.isNotEmpty()){
-            if (event[index].timestamp.equals(0) && !(event[index].timestamp.equals(null)) ) {
-                val eventDisplay = getEvent(index, timestamp?.toLong())
-                return eventDisplay.size
-            }
-        }
-        println("There are no events, please add them")
-        return 0
-    }
 
-    fun getEvent(index: Int, timestamp: Long?): ArrayList<DisplayedEvent> {
-        val event = ArrayList<Event>()
-        val eventDisplay = ArrayList<DisplayedEvent>()
-        for (i in event) {
-            if (i.timestamp == timestamp) {
-                eventDisplay.add(
-                    DisplayedEvent(
-                        event[index].planeId,
-                        event[index].eventType,
-                        event[index].fuelDelta
-                    )
-                )
-            }
-        }
-        return eventDisplay
-    }
-
-
-    fun subtractFuel(oldEvent: ArrayList<Event>, newEvent: ArrayList<Event>, index: Int): ArrayList<Event> {
-        val updatedEvent = ArrayList<Event>()
-
-        updatedEvent.add(Event
-            (
-            newEvent[index].planeId,
-            newEvent[index].planeModel,
-            newEvent[index].origin,
-            newEvent[index].destination,
-            newEvent[index].eventType,
-            newEvent[index].timestamp,
-            oldEvent[index].fuelDelta - abs(newEvent[index].fuelDelta)
-            ))
-
-        return updatedEvent
-    }
 
     fun removeEvent(userInput: String, event: ArrayList<Event>): ArrayList<Event> {
         val fields = userInput.split(" ")
@@ -89,22 +44,27 @@ class OutputEvent {
         return event
     }
 
+    //Checks if the function needs to replace,
+    // subtract or get the most recent fuel before 0
     fun alterFuel(event: ArrayList<Event>, fields: List<String>, timestamp: Long) :Int{
         var newFuel = 0
-        var indexToChange = 0
-        var negativeFuelUpdater = 0
-        event.forEach { outlerLoop ->
-            if (outlerLoop.planeId == fields[0] && outlerLoop.fuelDelta > 0 && outlerLoop.timestamp == timestamp) {
+        var indexToChange: Int
+        var negativeFuelUpdater: Int
+        event.forEach { outerLoop ->
+            if (outerLoop.planeId == fields[0] && outerLoop.fuelDelta > 0
+                && outerLoop.timestamp == timestamp) {
                 negativeFuelUpdater = newFuel
-                indexToChange = event.indexOf(outlerLoop)
+                indexToChange = event.indexOf(outerLoop)
                 replaceData(negativeFuelUpdater, event, indexToChange)
                 return -1
             }
-            if (outlerLoop.planeId == fields[0] && outlerLoop.fuelDelta > 0 && outlerLoop.timestamp != timestamp) {
-                newFuel = outlerLoop.fuelDelta + fields[6].toInt()
+            if (outerLoop.planeId == fields[0] && outerLoop.fuelDelta > 0
+                && outerLoop.timestamp != timestamp) {
+                /* used '+' because the fuel is negative */
+                newFuel = outerLoop.fuelDelta + fields[6].toInt()
             }
-            if (outlerLoop.planeId == fields[0] && outlerLoop.fuelDelta == 0) {
-                val oldFuel = outlerLoop.fuelDelta
+            if (outerLoop.planeId == fields[0] && outerLoop.fuelDelta == 0) {
+                val oldFuel = outerLoop.fuelDelta
                 event.forEach{
                     if (it.planeId == fields[0] && it.timestamp < timestamp
                         && it.fuelDelta != oldFuel) {

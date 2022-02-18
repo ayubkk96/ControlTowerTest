@@ -1,10 +1,7 @@
 package util
 
-import domain.DisplayedEvent
 import domain.Event
 import domain.Plane
-import java.lang.IllegalStateException
-import java.lang.ref.PhantomReference
 import java.text.SimpleDateFormat
 
 
