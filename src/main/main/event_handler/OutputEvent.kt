@@ -1,6 +1,5 @@
 package event_handler
 
-import mu.KotlinLogging
 import domain.Event
 import domain.Plane
 import util.Time

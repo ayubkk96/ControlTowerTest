@@ -9,6 +9,10 @@ import java.text.ParseException
 import java.util.*
 import kotlin.collections.ArrayList
 
+/** A ReplInterface class
+ * to be able to execute user input commands
+ * */
+
 class ReplInterface {
 
     val instructions = "insert 1 to add or update event(s), " +
